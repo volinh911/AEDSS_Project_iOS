@@ -80,8 +80,9 @@ struct mqttInfo {
 }
 
 struct settings{
-	static let IS_LOGGED_IN = "logged in"
+	static let IS_LOGGED_IN = "loggedin"
 	static let AUTH = "auth"
 	static let USERID = "userid"
-	static let ROOM = "room"
+	static let ROOM_LIST = "roolList"
+	static let ROOM_NAME = "roomName"
 }

@@ -12,7 +12,6 @@ struct LoginView: View {
 	@State private var email: String = ""
 	@State private var password: String = ""
 	@EnvironmentObject var authenticationSettings: AuthenticationSettings
-	@EnvironmentObject var authentication: AuthenticationAPI
 	
 	func convertToMd5(input: String) -> String {
 		let digest = Insecure.MD5.hash(data: Data(input.utf8))
@@ -25,9 +24,9 @@ struct LoginView: View {
 	var body: some View {
 		
 		if authenticationSettings.isLoggedIn {
-			RoomListView().environmentObject(authenticationSettings)
+			RoomListView().environmentObject(authenticationSettings).environmentObject(RoomSettings())
 		} else if UserDefaults.standard.bool(forKey: "login") == true {
-			RoomListView().environmentObject(authenticationSettings)
+			RoomListView().environmentObject(authenticationSettings).environmentObject(RoomSettings())
 		}
 		else {
 			ZStack {
@@ -65,14 +64,12 @@ struct LoginView: View {
 					Button(action: {
 						if (!self.email.isEmpty && !self.password.isEmpty) {
 							let hashPass = convertToMd5(input: password)
-							print(email)
-							print(hashPass)
+							print("email: \(email)")
+							print("hashPass: \(hashPass)")
+							
 							let parameters: [String: Any] = ["email": email, "password": hashPass]
-							let api = self.authentication.postLoginUser(parameters: parameters)
-							print(api)
+							authenticationSettings.postLoginUser(parameters: parameters)
 						}
-//						authenticationSettings.isLoggedIn = true
-						
 					}) {
 						Text("Login")
 							.font(.custom("Inconsolata-Regular", size: 18))

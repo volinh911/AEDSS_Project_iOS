@@ -11,7 +11,7 @@ import SwiftUI
 struct AEDSS_Project_iOSApp: App {
     var body: some Scene {
         WindowGroup {
-			LoginView().environmentObject(AuthenticationSettings()).environmentObject(AuthenticationAPI())
+			LoginView().environmentObject(AuthenticationSettings())
         }
     }
 }
