@@ -24,7 +24,7 @@ struct RoomInfoView: View {
 						.padding(.leading, 20)
 						.padding(.top, 8)
 					Spacer()
-					Text("Room List")
+					Text("Room \(self.roomName)")
 						.font(.custom("Inconsolata-Regular", size: 30))
 						.foregroundColor(.white)
 					Spacer()
@@ -39,9 +39,28 @@ struct RoomInfoView: View {
 					.fill(.black)
 					.frame(height: 1)
 				
+				// Bottom navigation
+				TabView {
+					// Tab Status
+					RoomStatusView().tabItem{
+						Label("status", systemImage: "togglepower")
+					}.toolbar(.visible, for: .tabBar)
+						.toolbarBackground(Color.backgroundColor, for: .tabBar)
+					
+					// Tab List
+					RoomTimeListView().tabItem{
+						Label("list", systemImage: "clock")
+					}.toolbar(.visible, for: .tabBar)
+						.toolbarBackground(Color.backgroundColor, for: .tabBar)
+					
+				}.tint(Color.white)
+				
 				Spacer()
 			}
-		}.navigationBarHidden(true)
+		}.toolbar(.hidden)
+		.onAppear(perform: {
+			self.roomName = room.name
+		})
 	}
 	
 }

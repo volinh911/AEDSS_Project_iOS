@@ -32,6 +32,7 @@ class RoomSettings: ObservableObject {
 					DispatchQueue.main.async{
 						if result.uniqueRoom != nil {
 							print("can load room")
+							print("\(result.uniqueRoom)")
 							let roomList: [String] = result.uniqueRoom
 							UserDefaults.standard.set(roomList, forKey: settings.ROOM_LIST)
 						} else {
