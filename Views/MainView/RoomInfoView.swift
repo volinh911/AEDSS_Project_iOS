@@ -76,6 +76,7 @@ struct RoomInfoView: View {
 			}
 		}.onAppear(perform: {
 			self.roomName = room.name
+			UserDefaults.standard.set(self.roomName, forKey: settings.ROOM_NAME)
 			getHeaders()
 		})
 		.navigationTitle("")
@@ -83,10 +84,8 @@ struct RoomInfoView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarLeading) {
 				Button {
-					print("Custom Action")
-					// 2
+					disconnectMQTT()
 					dismiss()
-					
 				} label: {
 					HStack {
 						Image(systemName: "chevron.backward")
@@ -136,14 +135,22 @@ struct RoomInfoView: View {
 	func getHeaders(){
 		savedAuth = UserDefaults.standard.string(forKey: settings.AUTH) ?? ""
 		savedUserId = UserDefaults.standard.string(forKey: settings.USERID) ?? ""
-		print("auth roominfo: \(savedAuth)")
-		print("userid roominfo: \(savedUserId)")
 		checkCamera()
+		getDevice()
 	}
 	func checkCamera() {
 		roomSettings.getCamera(auth: savedAuth, userid: savedUserId, roomName: room.name)
 		haveCamera = UserDefaults.standard.bool(forKey: settings.HAVE_CAMERA)
-		print("haveCamera roominfo: \(haveCamera)")
+	}
+	func getDevice() {
+		roomSettings.getAllDevices(auth: savedAuth, userid: savedUserId, roomName: room.name)
+	}
+	func disconnectMQTT() {
+		mqttManager.disconnect()
+	}
+	func connectMQTT() {
+		mqttManager.initializeMQTT(host: mqttInfo.BROKER, identifier: UUID().uuidString)
+		mqttManager.connect()
 	}
 }
 

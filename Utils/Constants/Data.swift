@@ -35,13 +35,15 @@ struct time {
 	}
 }
 
-struct device {
+struct deviceName {
 	static let AC_DEVICE = "AC"
 	static let AC_DEVICE_FULL = "Air Conditioner"
 	static let LIGHT_DEVICE = "Light"
 	static let DOOR_DEVICE = "Door"
 	static let TURN_OFF = "turn OFF?"
 	static let TURN_ON = "turn ON?"
+	static let LIGHT_STATE = "LightState"
+	static let CAMERA_PACK = "CameraPack"
 }
 
 struct apiInfo {
@@ -83,7 +85,26 @@ struct settings{
 	static let IS_LOGGED_IN = "loggedin"
 	static let AUTH = "auth"
 	static let USERID = "userid"
-	static let ROOM_LIST = "roolList"
+	static let ROOM_LIST = "roomList"
 	static let ROOM_NAME = "roomName"
 	static let HAVE_CAMERA = "have CAMERA"
+	static let HAVE_AC = "have AC"
+	static let HAVE_LIGHT = "have LIGHT"
+	static let HAVE_DOOR = "have DOOR"
+	static let DEVICE_LIST = "deviceList"
+	
+	static let AC_SUBSCRIBE_TOPIC = "AC_SUBSCRIBE_TOPIC"
+	static let LIGHT_SUBSCRIBE_TOPIC = "LIGHT_SUBSCRIBE_TOPIC"
+	static let DOOR_SUBSCRIBE_TOPIC = "DOOR_SUBSCRIBE_TOPIC"
+	
+	static let AC_PUBLISH_TOPIC = "AC_PUBLISH_TOPIC"
+	static let LIGHT_PUBLISH_TOPIC = "LIGHT_PUBLISH_TOPIC"
+	static let DOOR_PUBLISH_TOPIC = "DOOR_PUBLISH_TOPIC"
+	
+	static let LIGHT_AC_REQUEST_TOPIC = "LIGHT_AC_REQUEST_TOPIC"
+	
+	static let CAMERA_SUBSCRIBE_TOPIC = "CAMERA_SUBSCRIBE_TOPC"
+	static let CAMERA_PUBLISH_TOPIC = "CAMERA_PUBLISH_TOPC"
+	static let CAMERA_REQUEST_TOPIC = "CAMERA_REQUEST"
+	
 }

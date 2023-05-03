@@ -25,8 +25,10 @@ struct LoginView: View {
 		
 		if authenticationSettings.isLoggedIn {
 			RoomListView().environmentObject(authenticationSettings).environmentObject(RoomSettings())
+				.environmentObject(MQTTManager.shared())
 		} else if UserDefaults.standard.bool(forKey: "login") == true {
 			RoomListView().environmentObject(authenticationSettings).environmentObject(RoomSettings())
+				.environmentObject(MQTTManager.shared())
 		}
 		else {
 			ZStack {

@@ -14,6 +14,8 @@ struct RoomListView: View {
 	@State var savedUserId = ""
 	@State var roomList = [RoomModel]()
 	
+	@EnvironmentObject private var mqttManager: MQTTManager
+	
 	var body: some View {
 		NavigationView {
 			ZStack {
@@ -77,7 +79,7 @@ struct RoomListView: View {
 	func onStart() {
 		getHeaders()
 		getListRoom()
-		
+		connectMQTT()
 	}
 	
 	func getHeaders(){
@@ -95,6 +97,10 @@ struct RoomListView: View {
 		}
 	}
 	
+	func connectMQTT() {
+		mqttManager.initializeMQTT(host: mqttInfo.BROKER, identifier: UUID().uuidString)
+		mqttManager.connect()
+	}
 }
 
 //struct RoomListView_Previews: PreviewProvider {

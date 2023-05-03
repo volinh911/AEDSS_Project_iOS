@@ -60,10 +60,10 @@ final class MQTTManager: ObservableObject {
 
 	func connect() {
 		if let success = mqttClient?.connect(), success {
-			print("connect")
+			print("connect MQTT")
 			currentAppState.setAppConnectionState(state: .connecting)
 		} else {
-			print("disconnect")
+			print("disconnect MQTT")
 			currentAppState.setAppConnectionState(state: .disconnected)
 		}
 	}
@@ -73,7 +73,7 @@ final class MQTTManager: ObservableObject {
 		mqttClient?.subscribe(topic, qos: .qos1)
 	}
 
-	func publish(with message: String) {
+	func publish(topic: String, with message: String) {
 		mqttClient?.publish(topic, withString: message, qos: .qos0)
 	}
 
