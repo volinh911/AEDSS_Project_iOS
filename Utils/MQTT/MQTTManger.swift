@@ -74,7 +74,7 @@ final class MQTTManager: ObservableObject {
 	}
 
 	func publish(with message: String) {
-		mqttClient?.publish(topic, withString: message, qos: .qos1)
+		mqttClient?.publish(topic, withString: message, qos: .qos0)
 	}
 
 	func disconnect() {
@@ -175,7 +175,7 @@ extension MQTTManager {
 			prettyName = "didDisconect"
 		}
 
-		print("[TRACE] [\(prettyName)]: \(message)")
+		print("[MQTT] [\(prettyName)]: \(message)")
 	}
 }
 

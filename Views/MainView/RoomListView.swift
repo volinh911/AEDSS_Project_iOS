@@ -29,7 +29,7 @@ struct RoomListView: View {
 							.padding(.top, 8)
 						Spacer()
 						Text("Room List")
-							.font(.custom("Inconsolata-Regular", size: 30))
+							.font(.custom("Inconsolata-Bold", size: 30))
 							.foregroundColor(.white)
 						Spacer()
 						Image(systemName: "arrowshape.turn.up.right")
@@ -51,8 +51,7 @@ struct RoomListView: View {
 								.foregroundColor(.white)
 							Text("Room \(room.name)")
 								.font(.custom("Inconsolata-Regular", size: 20))
-								.fontWeight(.bold)
-								.padding(.top, 5)
+								.padding(.top, 3)
 								.foregroundColor(.white)
 							Spacer()
 							Image(systemName: "chevron.right")
@@ -62,7 +61,7 @@ struct RoomListView: View {
 						}.listRowBackground(Color.backgroundColor)
 							.padding(.top, 5)
 							.background(
-								NavigationLink(destination: RoomInfoView(room: room)) {
+								NavigationLink(destination: RoomInfoView(room: room).environmentObject(MQTTManager.shared())) {
 								}.opacity(0))
 					}.scrollContentBackground(.hidden)
 						.background(Color.backgroundColor)
@@ -98,8 +97,8 @@ struct RoomListView: View {
 	
 }
 
-struct RoomListView_Previews: PreviewProvider {
-	static var previews: some View {
-		RoomListView()
-	}
-}
+//struct RoomListView_Previews: PreviewProvider {
+//	static var previews: some View {
+//		RoomListView()
+//	}
+//}

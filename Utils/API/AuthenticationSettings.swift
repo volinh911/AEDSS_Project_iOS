@@ -31,7 +31,7 @@ class AuthenticationSettings: ObservableObject {
 	
 	func postLoginUser(parameters: [String: Any]) {
 		guard let url = URL(string: apiInfo.BASE_URL_API + apiInfo.POST_LOGIN_API) else {
-			print("Not found URL")
+			print("Not found URL postLoginUser")
 			return
 		}
 		

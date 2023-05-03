@@ -85,4 +85,5 @@ struct settings{
 	static let USERID = "userid"
 	static let ROOM_LIST = "roolList"
 	static let ROOM_NAME = "roomName"
+	static let HAVE_CAMERA = "have CAMERA"
 }
