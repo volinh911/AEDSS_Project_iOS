@@ -15,6 +15,7 @@ struct RoomInfoView: View {
 	
 	@EnvironmentObject var authenticationSettings: AuthenticationSettings
 	@EnvironmentObject var roomSettings: RoomSettings
+	@EnvironmentObject var configAndScheduleSettings: ConfigAndScheduleSettings
 	@State var savedAuth = ""
 	@State var savedUserId = ""
 	
@@ -64,7 +65,7 @@ struct RoomInfoView: View {
 			if self.showConfigCameraPopup {
 				GeometryReader { geometry in
 					VStack {
-						ConfigCameraPopupView()
+						ConfigCameraPopupView(nameRoom: $roomName).environmentObject(ConfigAndScheduleSettings())
 					}.frame(maxWidth: .infinity, maxHeight: .infinity)
 				}.background(Color.black.opacity(0.65)
 					.edgesIgnoringSafeArea(.all)
@@ -84,7 +85,6 @@ struct RoomInfoView: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarLeading) {
 				Button {
-					disconnectMQTT()
 					dismiss()
 				} label: {
 					HStack {
@@ -116,9 +116,7 @@ struct RoomInfoView: View {
 						}
 					}
 					
-					Button{
-						
-					} label: {
+					NavigationLink(destination: AddScheduleView()) {
 						Image(systemName: "plus")
 							.font(.system(size: 13))
 							.foregroundColor(.offColor)
@@ -144,13 +142,6 @@ struct RoomInfoView: View {
 	}
 	func getDevice() {
 		roomSettings.getAllDevices(auth: savedAuth, userid: savedUserId, roomName: room.name)
-	}
-	func disconnectMQTT() {
-		mqttManager.disconnect()
-	}
-	func connectMQTT() {
-		mqttManager.initializeMQTT(host: mqttInfo.BROKER, identifier: UUID().uuidString)
-		mqttManager.connect()
 	}
 }
 

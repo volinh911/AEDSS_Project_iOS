@@ -12,7 +12,7 @@ struct RoomStatusView: View {
 	@State var lightOn = false
 	@State var acOn = false
 	@State var doorClosed = false
-	@State var currentTemp = 0
+	@State var currentTemp = ""
 	
 	@EnvironmentObject var authenticationSettings: AuthenticationSettings
 	@EnvironmentObject var roomSettings: RoomSettings
@@ -44,7 +44,7 @@ struct RoomStatusView: View {
 			VStack {
 				if self.haveDoor {
 					//door
-					DoorItemView(doorClosed: $doorClosed)
+					DoorItemView(doorClosed: $mqttManager.currentAppState.doorMessage)
 				}
 				
 				if self.haveCamera {
@@ -53,11 +53,11 @@ struct RoomStatusView: View {
 				}
 				if self.haveLight {
 					// light
-					LightItemView(lightOn: $lightOn)
+					LightItemView(lightOn: $mqttManager.currentAppState.lightMessage)
 				}
 				if self.haveAc {
 					// AC
-					AirConditionerItemView(acOn: $acOn, currentTemp: $currentTemp)
+					AirConditionerItemView(acOn: $acOn, currentTemp: $mqttManager.currentAppState.tempMessage)
 				}
 				
 				Spacer()
@@ -77,7 +77,6 @@ struct RoomStatusView: View {
 		savedUserId = UserDefaults.standard.string(forKey: settings.USERID) ?? ""
 		haveCamera = UserDefaults.standard.bool(forKey: settings.HAVE_CAMERA)
 		savedRoomName = UserDefaults.standard.string(forKey: settings.ROOM_NAME) ?? ""
-
 		
 		doorPublishTopic = UserDefaults.standard.string(forKey: settings.DOOR_PUBLISH_TOPIC) ?? ""
 		doorSubscribeTopic = UserDefaults.standard.string(forKey: settings.DOOR_SUBSCRIBE_TOPIC) ?? ""
@@ -117,6 +116,7 @@ struct RoomStatusView: View {
 		publish(topic: acPublishTopic, request: mqttInfo.REQUEST_AC_STATE)
 		publish(topic: doorPublishTopic, request: mqttInfo.REQUEST_DOOR)
 		publish(topic: lightPublishTopic, request: mqttInfo.REQUEST_LIGHT_STATE)
+		
 	}
 	
 	func connectMQTT() {

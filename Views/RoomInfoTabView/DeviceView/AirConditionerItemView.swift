@@ -9,7 +9,9 @@ import SwiftUI
 
 struct AirConditionerItemView: View {
 	@Binding var acOn: Bool
-	@Binding var currentTemp: Int
+	@Binding var currentTemp: String
+	
+	@State var showPowerPopup = false
 	var body: some View {
 		VStack {
 			HStack(alignment: .top) {
@@ -24,10 +26,17 @@ struct AirConditionerItemView: View {
 					.padding(.top, 7)
 					.padding(.leading, 10)
 				Spacer()
-				Toggle("", isOn: $acOn)
-					.toggleStyle(SwitchToggleStyle(tint: .green))
-					.padding(.trailing, 20)
-					.font(.system(size: 10))
+				Button(action: {
+					self.showPowerPopup.toggle()
+					
+				}) {
+					Image(systemName: "togglepower")
+						.font(.system(size: 22))
+						.foregroundColor(.white)
+						.padding(.trailing, 20)
+						.padding(.top, 10)
+				}
+				
 			}
 			HStack {
 				Text("Current Temperature: \(currentTemp)")
@@ -37,9 +46,34 @@ struct AirConditionerItemView: View {
 					.padding(.leading, 65)
 				Spacer()
 			}
+			AsyncImage(
+				url: URL(string: "\(other.IMG_URL)10pr-BL5MglDqDts6XiZSM_RMdzZpzl64"),
+				content: { image in
+					image.resizable()
+						.aspectRatio(contentMode: .fit)
+						.frame(maxWidth: .infinity, maxHeight: .infinity)
+				},
+				placeholder: {
+					ProgressView()
+				}
+			)
+
+			if self.showPowerPopup {
+				GeometryReader { geometry in
+					VStack {
+						ACPopupPower()
+					}.frame(maxWidth: .infinity, maxHeight: .infinity)
+				}.background(Color.black.opacity(0.65)
+					.edgesIgnoringSafeArea(.all)
+					.onTapGesture {
+						withAnimation{
+							self.showPowerPopup.toggle()
+						}
+					})
+			}
 		}
 		.background(Color.backgroundColor)
-			.padding(.top, 20)
+		.padding(.top, 20)
 	}
 }
 

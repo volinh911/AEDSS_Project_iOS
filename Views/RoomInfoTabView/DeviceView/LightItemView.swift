@@ -31,8 +31,8 @@ struct LightItemView: View {
 	}
 }
 
-struct LightItemView_Previews: PreviewProvider {
-	static var previews: some View {
-		LightItemView(lightOn: .constant(true))
-	}
-}
+//struct LightItemView_Previews: PreviewProvider {
+//	static var previews: some View {
+//		LightItemView(lightOn: .constant(true))
+//	}
+//}

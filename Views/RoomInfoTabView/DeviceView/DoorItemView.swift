@@ -25,29 +25,28 @@ struct DoorItemView: View {
 				.padding(.top, 5)
 				.padding(.leading, 18)
 			Spacer()
-			Image(systemName: self.iconKey)
-				.font(.system(size: 20))
-				.foregroundColor(.white)
-				.padding(.trailing, 20)
-				.padding(.top, 5)
+			if !doorClosed {
+				Image(systemName: "lock.open")
+					.font(.system(size: 20))
+					.foregroundColor(.white)
+					.padding(.trailing, 20)
+					.padding(.top, 5)
+			} else {
+				Image(systemName: "lock")
+					.font(.system(size: 20))
+					.foregroundColor(.white)
+					.padding(.trailing, 20)
+					.padding(.top, 5)
+			}
+			
 		}.background(Color.backgroundColor)
 			.padding(.top, 20)
-			.onAppear(perform: {
-				getIconKey()
-			})
     }
-	
-	func getIconKey() {
-		if !doorClosed {
-			self.iconKey = "lock"
-		} else {
-			self.iconKey = "lock.open"
-		}
-	}
+
 }
 
-struct DoorItemView_Previews: PreviewProvider {
-    static var previews: some View {
-		DoorItemView(doorClosed: .constant(true))
-    }
-}
+//struct DoorItemView_Previews: PreviewProvider {
+//    static var previews: some View {
+//		DoorItemView(doorClosed: .constant(true))
+//    }
+//}

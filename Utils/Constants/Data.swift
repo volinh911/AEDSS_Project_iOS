@@ -7,34 +7,6 @@
 
 import Foundation
 
-struct time {
-	let DAY_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-
-	func getHourList() -> Array<String> {
-		var hourList: [String] = []
-		for i in 0...23 {
-			if (i < 10) {
-				hourList.append("0\(i)")
-			} else {
-				hourList.append("\(i)")
-			}
-		}
-		return hourList
-	}
-	
-	func getMinuteList() -> Array<String> {
-		var minList: [String] = []
-		for i in stride(from: 0, to: 56, by: 5) {
-			if (i < 10) {
-				minList.append("0\(i)")
-			} else {
-				minList.append("\(i)")
-			}
-		}
-		return minList
-	}
-}
-
 struct deviceName {
 	static let AC_DEVICE = "AC"
 	static let AC_DEVICE_FULL = "Air Conditioner"
@@ -92,6 +64,7 @@ struct settings{
 	static let HAVE_LIGHT = "have LIGHT"
 	static let HAVE_DOOR = "have DOOR"
 	static let DEVICE_LIST = "deviceList"
+	static let IS_TOKEN = "is token"
 	
 	static let AC_SUBSCRIBE_TOPIC = "AC_SUBSCRIBE_TOPIC"
 	static let LIGHT_SUBSCRIBE_TOPIC = "LIGHT_SUBSCRIBE_TOPIC"
@@ -107,4 +80,10 @@ struct settings{
 	static let CAMERA_PUBLISH_TOPIC = "CAMERA_PUBLISH_TOPC"
 	static let CAMERA_REQUEST_TOPIC = "CAMERA_REQUEST"
 	
+	static let HAVE_EMAIL = "HAVE EMAIL"
+	static let CAMERA_CONFIG = "CAMERA CONFIG"
+}
+
+struct other{
+	static let IMG_URL = "https://docs.google.com/uc?id="
 }

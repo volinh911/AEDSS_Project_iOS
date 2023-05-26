@@ -50,17 +50,31 @@ enum MQTTAppConnectionState {
 
 final class MQTTAppState: ObservableObject {
 	@Published var appConnectionState: MQTTAppConnectionState = .disconnected
-	@Published var historyText: String = ""
-	private var receivedMessage: String = ""
+	@Published var receivedMessage: String = ""
+	@Published var tempMessage: String = ""
+	@Published var lightMessage: Bool = false
+	@Published var doorMessage: Bool = false
 
 	func setReceivedMessage(text: String) {
-		receivedMessage = text
-		historyText = historyText + "\n" + receivedMessage
+		if text.contains("temp") {
+			tempMessage = text.replacingOccurrences(of: "temp: ", with: "")
+		}
+		if text.contains("light") {
+			var temp = text.replacingOccurrences(of: "light:", with: "")
+			if (temp == "1") {
+				lightMessage = true //on
+			}
+		}
+		if text.contains("door") {
+			var temp = text.replacingOccurrences(of: "door:", with: "")
+			if (temp == "1") {
+				doorMessage = true //locked
+			}
+		}
 	}
 
 	func clearData() {
 		receivedMessage = ""
-		historyText = ""
 	}
 
 	func setAppConnectionState(state: MQTTAppConnectionState) {

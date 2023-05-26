@@ -76,6 +76,11 @@ class RoomSettings: ObservableObject {
 						if result[0]._id != nil {
 							print("have yolo - camera")
 							UserDefaults.standard.set(true, forKey: settings.HAVE_CAMERA)
+							UserDefaults.standard.set(result[0].publish, forKey: settings.CAMERA_SUBSCRIBE_TOPIC)
+							UserDefaults.standard.set(result[0].subscribe, forKey: settings.CAMERA_PUBLISH_TOPIC)
+							if ((result[0].request?.contains("serverRequestACID")) != nil) {
+								UserDefaults.standard.set(result[0].request, forKey: settings.CAMERA_REQUEST_TOPIC)
+							}
 						} else {
 							print("dont have yolo - camera")
 							UserDefaults.standard.set(false, forKey: settings.HAVE_CAMERA)
@@ -83,7 +88,7 @@ class RoomSettings: ObservableObject {
 					}
 				}
 			} catch let JsonError {
-				print("get yolo error:", JsonError)
+				print("get camera error:", JsonError)
 				return
 			}
 		}.resume()
@@ -102,7 +107,7 @@ class RoomSettings: ObservableObject {
 		
 		URLSession.shared.dataTask(with: request) {
 			(data, red, error) in if error != nil {
-				print("error api getYolo", error?.localizedDescription ?? "")
+				print("error getAllDevices", error?.localizedDescription ?? "")
 				return
 			}
 			
@@ -175,7 +180,7 @@ class RoomSettings: ObservableObject {
 					}
 				}
 			} catch let JsonError {
-				print("get yolo error:", JsonError)
+				print("getAllDevices error:", JsonError)
 				return
 			}
 		}.resume()

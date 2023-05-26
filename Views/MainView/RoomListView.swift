@@ -12,6 +12,7 @@ struct RoomListView: View {
 	@EnvironmentObject var roomSettings: RoomSettings
 	@State var savedAuth = ""
 	@State var savedUserId = ""
+	@State var showLogoutPopup = false
 	@State var roomList = [RoomModel]()
 	
 	@EnvironmentObject private var mqttManager: MQTTManager
@@ -24,20 +25,27 @@ struct RoomListView: View {
 				VStack {
 					// taskbar
 					HStack {
-						Image(systemName: "person.fill")
-							.font(.system(size: 20))
-							.foregroundColor(.white)
-							.padding(.leading, 20)
-							.padding(.top, 8)
+						NavigationLink(destination: ChangePasswordView()) {
+							Image(systemName: "person.fill")
+								.font(.system(size: 20))
+								.foregroundColor(.white)
+								.padding(.leading, 20)
+								.padding(.top, 8)
+						}
+						
 						Spacer()
 						Text("Room List")
 							.font(.custom("Inconsolata-Bold", size: 30))
 							.foregroundColor(.white)
 						Spacer()
-						Image(systemName: "arrowshape.turn.up.right")
-							.font(.system(size: 20))
-							.foregroundColor(.white)
-							.padding(.trailing, 20)
+						Button(action: {
+							self.showLogoutPopup.toggle()
+						}, label: {
+							Image(systemName: "arrowshape.turn.up.right")
+								.font(.system(size: 20))
+								.foregroundColor(.white)
+								.padding(.trailing, 20)
+						})
 					}
 					
 					// line
@@ -71,6 +79,51 @@ struct RoomListView: View {
 				}
 				// to push everything top
 				Spacer()
+				
+				if self.showLogoutPopup {
+					GeometryReader { geometry in
+						VStack {
+							VStack{
+								Text("Alert")
+									.font(.custom("Inconsolata-Regular", size: 20))
+									.foregroundColor(Color.buttonColor)
+								
+								// line
+								Rectangle()
+									.fill(.black)
+									.frame(height: 1)
+								
+								Text("Are you sure you wish to logout?")
+									.font(.custom("Inconsolata-Regular", size: 15))
+									.foregroundColor(Color.black)
+								
+								HStack {
+									Button(action: {
+										mqttManager.disconnect()
+										authenticationSettings.isLoggedIn = false
+									}) {
+										Text("OK")
+											.font(.custom("Inconsolata-Regular", size: 18))
+											.padding([.horizontal],30)
+											.padding([.vertical], 10)
+											.background(Color.buttonColor)
+											.foregroundColor(.white)
+											.cornerRadius(8)
+									}
+									
+								}
+							}.padding()
+								.background(Color.white)
+								.cornerRadius(15)
+						}.frame(maxWidth: .infinity, maxHeight: .infinity)
+					}.background(Color.black.opacity(0.65)
+						.edgesIgnoringSafeArea(.all)
+						.onTapGesture {
+							withAnimation{
+								self.showLogoutPopup.toggle()
+							}
+						})
+				}
 			}
 		}.onAppear(perform: {onStart()})
 			.accentColor(Color.backgroundColor)
