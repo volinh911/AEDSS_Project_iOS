@@ -39,7 +39,7 @@ struct ConfigCameraPopupView: View {
 				.padding(.top, 10)
 			Picker("", selection: $chosen) {
 				ForEach(1..<24, id: \.self){
-					Text("\($0)")
+					Text("\($0)").foregroundColor(.black)
 				}
 			}
 			.pickerStyle(.wheel)

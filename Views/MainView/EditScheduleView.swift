@@ -11,13 +11,13 @@ struct EditScheduleView: View {
 	@Environment(\.dismiss) private var dismiss
 	
 	@State private var selected = 1
-	@State private var isAC = true
+	@State private var isAC = false
 	@State private var isRepeat = false
 	@State private var isFrom = false
-	@State private var isTo = false
-	@State private var chosenDay = "Monday"
+	@State private var isTo = true
+	@State private var chosenDay = "Friday"
 	@State private var chosenTimeFrom = 0
-	@State private var chosenTimeTo = 0
+	@State private var chosenTimeTo = 11
 	@State private var chosenMinFrom = 0
 	@State private var chosenMinTo = 0
 	

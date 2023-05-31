@@ -112,6 +112,29 @@ struct ForgotPasswordView: View {
 						})
 				}
 			}
+		}.onTapGesture {
+			self.hideKeyboard()
+		}
+		.navigationTitle("")
+		.navigationBarBackButtonHidden(true)
+		.toolbar {
+			ToolbarItem(placement: .navigationBarLeading) {
+				Button {
+					dismiss()
+				} label: {
+					HStack {
+						Image(systemName: "chevron.backward")
+							.font(.system(size: 13))
+							.foregroundColor(.offColor)
+							.padding(.top, 5)
+							.padding(.trailing, 20)
+						Text("Back")
+							.font(.custom("Inconsolata-Regular", size: 20))
+							.padding(.top, 5)
+							.foregroundColor(.offColor)
+					}
+				}
+			}
 		}
 	}
 }

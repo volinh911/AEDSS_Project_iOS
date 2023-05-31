@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 struct InsertTokenPopupView: View {
 	@State private var token: String = ""
@@ -17,6 +18,14 @@ struct InsertTokenPopupView: View {
 	@State var savedAuth = ""
 	@State var savedUserId = ""
 	
+	func convertToMd5(input: String) -> String {
+			let digest = Insecure.MD5.hash(data: Data(input.utf8))
+			
+			return digest.map {
+				String(format: "%02hhx", $0)
+			}.joined()
+		}
+	
 	var body: some View {
 		VStack{
 			Text("Input received token")
@@ -25,7 +34,7 @@ struct InsertTokenPopupView: View {
 
 			UnderlineTextFieldView(
 				text: $token,
-				textFieldView: SecureField("", text: $token)
+				textFieldView: TextField("", text: $token)
 					.font(.custom("Inconsolata-Regular", size: 18))
 					.foregroundColor(.black),
 				placeholder: "Token")
@@ -55,13 +64,13 @@ struct InsertTokenPopupView: View {
 				VStack{
 					UnderlineTextFieldView(
 						text: $password,
-						textFieldView: TextField("", text: $password)
+						textFieldView: SecureField("", text: $password)
 							.font(.custom("Inconsolata-Regular", size: 18))
 							.foregroundColor(.black)
 							.keyboardType(.emailAddress)
 							.autocapitalization(.none),
 						placeholder: "New Password")
-					.padding(.top, 100)
+					.padding(.top, 20)
 					
 					UnderlineTextFieldView(
 						text: $confirmPassword,
@@ -74,7 +83,8 @@ struct InsertTokenPopupView: View {
 					Button(action: {
 						getHeaders()
 						if (self.password == self.confirmPassword) {
-							let parameters: [String: Any] = ["newPassword": self.password]
+							let hashPass = convertToMd5(input: password)
+							let parameters: [String: Any] = ["newPassword": hashPass]
 							authenticationSettings.changePassword(auth: self.savedAuth, userid: self.savedUserId, parameters: parameters)
 						}
 					}) {
@@ -85,7 +95,7 @@ struct InsertTokenPopupView: View {
 							.background(Color.buttonColor)
 							.foregroundColor(.white)
 							.cornerRadius(8)
-							.padding(.top, 100)
+							.padding(.top, 50)
 					}
 				}
 			}
@@ -93,6 +103,9 @@ struct InsertTokenPopupView: View {
 		}.padding()
 			.background(Color.white)
 			.cornerRadius(15)
+			.onTapGesture {
+				self.hideKeyboard()
+			}
 	}
 	
 	func getHeaders(){

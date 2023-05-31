@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 struct ChangePasswordView: View {
 	@Environment(\.dismiss) private var dismiss
@@ -15,6 +16,14 @@ struct ChangePasswordView: View {
 	
 	@State var savedAuth = ""
 	@State var savedUserId = ""
+	
+	func convertToMd5(input: String) -> String {
+		let digest = Insecure.MD5.hash(data: Data(input.utf8))
+		
+		return digest.map {
+			String(format: "%02hhx", $0)
+		}.joined()
+	}
 	
 	var body: some View {
 		NavigationView {
@@ -36,7 +45,7 @@ struct ChangePasswordView: View {
 					
 					UnderlineTextFieldView(
 						text: $password,
-						textFieldView: TextField("", text: $password)
+						textFieldView: SecureField("", text: $password)
 							.font(.custom("Inconsolata-Regular", size: 18))
 							.foregroundColor(.white)
 							.keyboardType(.emailAddress)
@@ -55,8 +64,17 @@ struct ChangePasswordView: View {
 					
 					Button(action: {
 						if (self.password == self.confirmPassword) {
-							let parameters: [String: Any] = ["newPassword": self.password]
+							let hashPass = convertToMd5(input: password)
+							
+							let parameters: [String: Any] = ["newPassword": hashPass]
 							authenticationSettings.changePassword(auth: self.savedAuth, userid: self.savedUserId, parameters: parameters)
+						}
+						
+						DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+							print("\(authenticationSettings.isChangedPass)")
+							if authenticationSettings.isChangedPass {
+								dismiss()
+							}
 						}
 					}) {
 						Text("Submit")
@@ -88,6 +106,30 @@ struct ChangePasswordView: View {
 				}
 			}
 		}.onAppear(perform: {getHeaders()})
+			.onTapGesture {
+				self.hideKeyboard()
+			}
+			.navigationTitle("")
+			.navigationBarBackButtonHidden(true)
+			.toolbar {
+				ToolbarItem(placement: .navigationBarLeading) {
+					Button {
+						dismiss()
+					} label: {
+						HStack {
+							Image(systemName: "chevron.backward")
+								.font(.system(size: 13))
+								.foregroundColor(.offColor)
+								.padding(.top, 5)
+								.padding(.trailing, 20)
+							Text("Back")
+								.font(.custom("Inconsolata-Regular", size: 20))
+								.padding(.top, 5)
+								.foregroundColor(.offColor)
+						}
+					}
+				}
+			}
 	}
 	func getHeaders(){
 		savedAuth = UserDefaults.standard.string(forKey: settings.AUTH) ?? ""

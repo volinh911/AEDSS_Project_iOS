@@ -13,14 +13,19 @@ class AuthenticationSettings: ObservableObject {
 			UserDefaults.standard.set(isLoggedIn, forKey: settings.IS_LOGGED_IN)
 		}
 	}
+	@Published var isChangedPass: Bool {
+		didSet {
+			UserDefaults.standard.set(isChangedPass, forKey: settings.IS_CHANGED_PASS)
+		}
+	}
 	@Published var haveEmail: Bool {
 		didSet {
-			UserDefaults.standard.set(isLoggedIn, forKey: settings.HAVE_EMAIL)
+			UserDefaults.standard.set(haveEmail, forKey: settings.HAVE_EMAIL)
 		}
 	}
 	@Published var isToken: Bool {
 		didSet {
-			UserDefaults.standard.set(isLoggedIn, forKey: settings.HAVE_EMAIL)
+			UserDefaults.standard.set(isToken, forKey: settings.IS_TOKEN)
 		}
 	}
 	@Published var auth: String {
@@ -39,6 +44,7 @@ class AuthenticationSettings: ObservableObject {
 		self.userid = ""
 		self.haveEmail = false
 		self.isToken = false
+		self.isChangedPass = false
 	}
 	
 	func postLoginUser(parameters: [String: Any]) {
@@ -190,9 +196,9 @@ class AuthenticationSettings: ObservableObject {
 						print("Validate token: \(result)")
 						if (result.success == true) {
 							if let response = res as? HTTPURLResponse {
-								self.userid = response.value(forHTTPHeaderField: "userid")!
+								self.userid = response.value(forHTTPHeaderField: "userid") ?? ""
 								print("userid: \(self.userid)")
-								self.auth = response.value(forHTTPHeaderField: "auth")!
+								self.auth = response.value(forHTTPHeaderField: "auth") ?? ""
 								print("auth: \(self.auth)")
 								self.isToken = true
 							}
@@ -236,25 +242,19 @@ class AuthenticationSettings: ObservableObject {
 				if let data = data {
 					let result = try JSONDecoder().decode(ResponseData.self, from: data)
 					DispatchQueue.main.async {
-						print("Validate token: \(result)")
+						print("Change pass: \(result)")
 						if (result.success == true) {
-							if let response = res as? HTTPURLResponse {
-								self.userid = response.value(forHTTPHeaderField: "userid") ?? ""
-								print("userid: \(self.userid)")
-								self.auth = response.value(forHTTPHeaderField: "auth") ?? ""
-								print("auth: \(self.auth)")
-								self.isLoggedIn = true
-							}
+							self.isChangedPass = true
 						} else {
 							return
 						}
 					}
 				} else {
-					print("cannot validate token")
+					print("cannot CHANGE PASS")
 					return
 				}
 			} catch let JsonError {
-				print("validate token error:", JsonError)
+				print("change pass error:", JsonError)
 				return
 			}
 		}.resume()

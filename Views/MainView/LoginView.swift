@@ -8,10 +8,20 @@
 import SwiftUI
 import CryptoKit
 
+#if canImport(UIKit)
+extension View {
+	func hideKeyboard() {
+		UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+	}
+}
+#endif
+
 struct LoginView: View {
 	@State private var email: String = ""
 	@State private var password: String = ""
 	@EnvironmentObject var authenticationSettings: AuthenticationSettings
+	
+//	@FocusState private var textFocused: Field?
 	
 	func convertToMd5(input: String) -> String {
 		let digest = Insecure.MD5.hash(data: Data(input.utf8))
@@ -54,6 +64,7 @@ struct LoginView: View {
 								.autocapitalization(.none),
 							placeholder: "Email Address")
 						.padding(.top, 120)
+//						.focused($textFocused)
 						
 						UnderlineTextFieldView(
 							text: $password,
@@ -62,7 +73,7 @@ struct LoginView: View {
 								.foregroundColor(.white),
 							placeholder: "Password")
 						.padding(.top, 40)
-						
+//						.focused($textFocused)
 						
 						Button(action: {
 							if (!self.email.isEmpty && !self.password.isEmpty) {
@@ -102,6 +113,8 @@ struct LoginView: View {
 							.padding(.leading, 20)
 					}
 				}
+			}.onTapGesture {
+				self.hideKeyboard()
 			}
 		}
 	}

@@ -156,7 +156,7 @@ struct RoomTimeListView: View {
 	func getScheduleList() {
 		scheduleList = []
 		scheduleList.append(ScheduleModel(scheduleId: "12345", day: "Monday", isAC: true, isRepeat: true, from: "13:00", to: "-1"))
-//		scheduleList.append(ScheduleModel(scheduleId: "12345", day: "Tuesday", isAC: false, isRepeat: false, from: "-1", to: "17:30"))
+//		scheduleList.append(ScheduleModel(scheduleId: "12346", day: "Tuesday", isAC: false, isRepeat: false, from: "-1", to: "11:00"))
 //		scheduleList.append(ScheduleModel(scheduleId: "12345", day: "Thursday", isAC: true, isRepeat: true, from: "07:50", to: "11:30"))
 	}
 }

@@ -65,6 +65,7 @@ struct settings{
 	static let HAVE_DOOR = "have DOOR"
 	static let DEVICE_LIST = "deviceList"
 	static let IS_TOKEN = "is token"
+	static let IS_CHANGED_PASS = "is changed pass"
 	
 	static let AC_SUBSCRIBE_TOPIC = "AC_SUBSCRIBE_TOPIC"
 	static let LIGHT_SUBSCRIBE_TOPIC = "LIGHT_SUBSCRIBE_TOPIC"
